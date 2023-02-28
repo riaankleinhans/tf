@@ -1,6 +1,6 @@
 resource "null_resource" "sync_apt_repos" {
   provisioner "local-exec" {
-    command = "sudo apt-get update && sudo apt-get upgrade"
+    command = "sudo apt-get update && sudo apt-get -y upgrade"
   }
 }
 
