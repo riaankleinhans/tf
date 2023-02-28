@@ -8,6 +8,7 @@ resource "null_resource" "install_htop" {
   provisioner "local-exec" {
     command = "sudo apt-get install -y htop"
   }
+  depends_on = [null_resource.sync_apt_repos]
 }
 
 resource "null_resource" "install_curl" {
