@@ -15,3 +15,10 @@ resource "null_resource" "install_curl" {
     command = "sudo apt install -y curl"
   }
 }
+
+resource "null_resource" "install_gparted" {
+  provisioner "local-exec" {
+    command = "sudo apt install -y gparted"
+  }
+}
+
