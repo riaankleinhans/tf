@@ -75,6 +75,11 @@ resource "null_resource" "install_kind" {
 
 resource "null_resource" "install_coder" {
   provisioner "local-exec" {
-    command = "sudo curl -fsSL https://coder.com/install.sh | sh"
-   }
+    command = <<EOT
+      mkdir -p ~/.cache/coder &&
+      curl -#fL -o ~/.cache/coder/coder_0.17.4_amd64.deb.incomplete -C - https://github.com/coder/coder/releases/download/v0.17.4/coder_0.17.4_linux_amd64.deb &&
+      mv ~/.cache/coder/coder_0.17.4_amd64.deb.incomplete ~/.cache/coder/coder_0.17.4_amd64.deb &&
+      sudo dpkg --force-confdef --force-confold -i ~/.cache/coder/coder_0.17.4_amd64.deb
+    EOT
+  }
 }
