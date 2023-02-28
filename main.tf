@@ -72,3 +72,12 @@ resource "null_resource" "install_kind" {
     EOT
   }
 }
+
+resource "null_resource" "install_coder" {
+  provisioner "local-exec" {
+    command = <<-EOT
+      curl -fsSL https://coder.com/setup.sh | sudo bash -
+      sudo systemctl enable --now coder-server
+    EOT
+  }
+}
