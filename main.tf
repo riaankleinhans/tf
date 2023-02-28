@@ -6,9 +6,12 @@ resource "null_resource" "sync_apt_repos" {
 
 resource "null_resource" "install_htop_curl" {
   provisioner "local-exec" {
-    "command" = <<-EOT 
-    sudo apt-get install -y htop
-    sudo apt install -y curl
-    EOT
-  }
+    command "sudo apt-get install -y htop"
+   }
+}
+
+resource "null_resource" "install_htop_curl" {
+  provisioner "local-exec" {
+    command "sudo apt install -y curl"
+   }
 }
