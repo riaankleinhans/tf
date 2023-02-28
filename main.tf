@@ -28,6 +28,18 @@ resource "null_resource" "install_tmate" {
   }
 }
 
+resource "null_resource" "install_vim" {
+  provisioner "local-exec" {
+    command = "sudo apt install -y vim"
+  }
+}
+
+resource "null_resource" "install_pwgen" {
+  provisioner "local-exec" {
+    command = "sudo apt install -y pwgen"
+  }
+}
+
 resource "null_resource" "install_kubectl" {
   provisioner "local-exec" {
     command = <<-EOT
