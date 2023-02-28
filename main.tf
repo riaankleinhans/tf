@@ -74,7 +74,7 @@ resource "null_resource" "install_docker" {
       sudo usermod -aG docker $(cat /tmp/current_user.txt)
     EOT
   }
-  depends_on = [null_resource.write_username_to_file]
+  depends_on = [null_resource.write_username_to_file,null_resource.install_kubectl]
 }
 
 resource "null_resource" "go-lang" {
