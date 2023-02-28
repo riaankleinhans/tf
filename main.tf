@@ -4,13 +4,13 @@ resource "null_resource" "sync_apt_repos" {
   }
 }
 
-esource "null_resource" "install_htop" {
+resource "null_resource" "install_htop" {
   provisioner "local-exec" {
     command = "sudo apt-get install -y htop"
   }
 }
 
-esource "null_resource" "install_curl" {
+resource "null_resource" "install_curl" {
   provisioner "local-exec" {
     command = "sudo apt install -y curl"
   }
