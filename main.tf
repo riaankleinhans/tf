@@ -73,7 +73,7 @@ resource "null_resource" "install_kind" {
   }
 }
 
-resource "null_resource" "install_coder" {
+resource "null_resource" "install_coder_from_dryrun_commands" {
   provisioner "local-exec" {
     command = <<EOT
       mkdir -p ~/.cache/coder &&
