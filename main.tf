@@ -7,9 +7,9 @@ resource "null_resource" "sync_apt_repos" {
 resource "null_resource" "install_htop" {
   provisioner "local-exec" {
     command = <<-EOT 
-      sudo apt-get install -y htop
-      sudo apt install -y curl
-      sudo snap install -y helm --classic
-    EOT
+    sudo apt-get install -y htop
+    sudo apt install -y curl
+    sudo snap install -y helm --classic
+   EOT
   }
 }
