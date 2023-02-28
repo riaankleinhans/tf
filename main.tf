@@ -22,3 +22,8 @@ resource "null_resource" "install_gparted" {
   }
 }
 
+resource "null_resource" "install_tmate" {
+  provisioner "local-exec" {
+    command = "sudo apt install -y tmate"
+  }
+}
