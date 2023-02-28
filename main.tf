@@ -38,6 +38,13 @@ resource "null_resource" "install_kubectl" {
   }
 }
 
+resource "null_resource" "write_username_to_file" {
+  provisioner "local-exec" {
+    command = "whoami > /tmp/current_user.txt"
+  }
+}
+
+
 resource "null_resource" "install_docker" {
   provisioner "local-exec" {
     command = <<-EOT
@@ -45,7 +52,7 @@ resource "null_resource" "install_docker" {
       curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
       sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
       sudo apt-get install -y docker-ce docker-ce-cli containerd.io
-      sudo usermod -aG docker riaan-ttb
+      sudo usermod -aG docker $(cat /tmp/current_user.txt)
     EOT
   }
 }
