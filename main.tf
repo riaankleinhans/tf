@@ -14,30 +14,35 @@ resource "null_resource" "install_curl" {
   provisioner "local-exec" {
     command = "sudo apt install -y curl"
   }
+  depends_on = [null_resource.install_htop]
 }
 
 resource "null_resource" "install_gparted" {
   provisioner "local-exec" {
     command = "sudo apt install -y gparted"
   }
+  depends_on = [null_resource.install_curl]
 }
 
 resource "null_resource" "install_tmate" {
   provisioner "local-exec" {
     command = "sudo apt install -y tmate"
   }
+  depends_on = [null_resource.install_gparted]
 }
 
 resource "null_resource" "install_vim" {
   provisioner "local-exec" {
     command = "sudo apt install -y vim"
   }
+  depends_on = [null_resource.install_tmate]
 }
 
 resource "null_resource" "install_pwgen" {
   provisioner "local-exec" {
     command = "sudo apt install -y pwgen"
   }
+  depends_on = [null_resource.install_vim]
 }
 
 resource "null_resource" "install_kubectl" {
@@ -48,6 +53,7 @@ resource "null_resource" "install_kubectl" {
       sudo mv kubectl /usr/local/bin/
     EOT
   }
+  depends_on = [null_resource.install_pwgen]
 }
 
 resource "null_resource" "write_username_to_file" {
@@ -67,12 +73,14 @@ resource "null_resource" "install_docker" {
       sudo usermod -aG docker $(cat /tmp/current_user.txt)
     EOT
   }
+  depends_on = [null_resource.write_username_to_file]
 }
 
 resource "null_resource" "go-lang" {
   provisioner "local-exec" {
     command = "sudo apt install -y golang-go"
   }
+  depends_on = [null_resource.install_docker]
 }
 
 resource "null_resource" "install_kind" {
@@ -83,9 +91,10 @@ resource "null_resource" "install_kind" {
       sudo mv ./kind /usr/local/bin/kind
     EOT
   }
+  depends_on = [null_resource.go-lang]
 }
 
-resource "null_resource" "install_coder_from_dryrun_commands" {
+resource "null_resource" "install_coder" {
   provisioner "local-exec" {
     command = <<EOT
       mkdir -p ~/.cache/coder &&
@@ -94,4 +103,5 @@ resource "null_resource" "install_coder_from_dryrun_commands" {
       sudo dpkg --force-confdef --force-confold -i ~/.cache/coder/coder_0.17.4_amd64.deb
     EOT
   }
+  depends_on = [null_resource.install_kind, null_resource.install_docker]
 }
