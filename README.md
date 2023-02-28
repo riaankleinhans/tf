@@ -1,10 +1,14 @@
 # tf
 
-Create a VM with Ubuntu
+## Create a VM with Ubuntu
 
-Install git    sudo apt install git
-
+## Install git    
+```
+sudo apt install git
+```
+```
 git clone https://github.com/Riaankl/tf.git
+```
 
 ## Install Terraform
 ```
