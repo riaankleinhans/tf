@@ -27,3 +27,9 @@ resource "null_resource" "install_tmate" {
     command = "sudo apt install -y tmate"
   }
 }
+
+resource "null_resource" "install_kubectl" {
+  provisioner "local-exec" {
+    command = "sudo apt install -y kubectl"
+  }
+}
