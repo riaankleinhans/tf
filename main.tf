@@ -56,3 +56,10 @@ resource "null_resource" "install_docker" {
     EOT
   }
 }
+
+resource "null_resource" "go-lang" {
+  provisioner "local-exec" {
+    command = "sudo apt install -y golang-go"
+  }
+}
+
