@@ -63,3 +63,12 @@ resource "null_resource" "go-lang" {
   }
 }
 
+resource "null_resource" "install_kind" {
+  provisioner "local-exec" {
+    command = <<-EOT
+      curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.12.0/kind-linux-amd64
+      chmod +x ./kind
+      sudo mv ./kind /usr/local/bin/kind
+    EOT
+  }
+}
