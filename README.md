@@ -1,4 +1,4 @@
-# tf
+# Getting Docker, Kind and Coder up and running with Terraform
 
 ## Create a VM with Ubuntu
 
@@ -20,8 +20,10 @@ echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://
 ```
 sudo apt update && sudo apt install terraform
 ```
-
-cd to ~/Riaankl/tf.git
+## Go to Terraform directory and run terraform
+```
+cd ~/Riaankl/tf.git
+```
 ```
 terraform init
 ```
