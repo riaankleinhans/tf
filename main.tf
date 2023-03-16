@@ -77,9 +77,9 @@ resource "null_resource" "install_docker" {
   depends_on = [null_resource.write_username_to_file,null_resource.install_kubectl]
 }
 
-resource "null_resource" "go-lang" {
+resource "null_resource" "openssh-server" {
   provisioner "local-exec" {
-    command = "sudo apt install -y golang-go"
+    command = "sudo apt install -y openssh-server"
   }
   depends_on = [null_resource.install_docker]
 }
@@ -92,7 +92,7 @@ resource "null_resource" "install_kind" {
       sudo mv ./kind /usr/local/bin/kind
     EOT
   }
-  depends_on = [null_resource.go-lang]
+  depends_on = [null_resource.openssh-server]
 }
 
 resource "null_resource" "install_coder" {
