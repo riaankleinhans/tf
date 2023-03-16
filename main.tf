@@ -120,3 +120,28 @@ resource "null_resource" "emacs_broadway_installation" {
    }
   depends_on = [null_resource.virtualbox_installation]
 }
+
+resource "null_resource" "tmux-ttyd-wiregaurd" {
+  provisioner "local-exec" {
+    command = <<EOT
+      sudo apt-get install -y tmux ttyd wireguard-tools
+      GO_VERSION=1.20.2
+      curl -sSL https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz | sudo tar --directory /usr/local --extract --ungzip
+      export PATH=~/go/bin:/usr/local/go/bin:$PATH
+      go install github.com/coder/wgtunnel/cmd/tunnel@v0.1.5
+    EOT
+  }
+  depends_on = [null_resource.emacs_broadway_installation]
+}
+
+resource "local_file" "tunnel-tmux.sh" {
+  filename = "/home/test/tunnel-test.sh"
+  content  = <<-EOT
+   tmux -L ii new -d
+   ttyd -p 7681 tmux -L ii at 2&>1 >> /home/test/tunnel-test.log &
+   export TUNNEL_WIREGUARD_KEY=$(wg genkey)
+   export TUNNEL_API_URL=https://try.ii.nz
+   tunnel localhost:54321
+  EOT
+  perms    = "0755"
+}
