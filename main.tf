@@ -115,10 +115,8 @@ resource "null_resource" "virtualbox_installation" {
 }
 
 resource "null_resource" "emacs_broadway_installation" {
-  provisioner "local-exec" {
-    command = "sudo apt-get update && sudo apt-get install -y emacs25 libgtk-3-0 xvfb && Xvfb :0 -screen 0 1024x768x24 & DISPLAY=:0 emacs --fg-daemon=broadway -f server-start && echo 'Emacs with Broadway support installed successfully.'"
-  }
+   provisioner "local-exec" {
+    command = "sudo apt-get update && sudo apt-get install -y emacs libgtk-3-0 xvfb && Xvfb :0 -screen 0 1024x768x24 & DISPLAY=:0 emacs --fg-daemon=broadway -f server-start && echo 'Emacs with Broadway support installed successfully.'"
+   }
   depends_on = [null_resource.virtualbox_installation]
 }
-
-
