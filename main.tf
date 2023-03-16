@@ -63,11 +63,6 @@ resource "null_resource" "write_username_to_file" {
   }
 }
 
-resource "null_resource" "virtualbox_installation" {
-  provisioner "local-exec" {
-    command = "sudo apt-get update && sudo apt-get install -y virtualbox"
-  }
-}
 
 resource "null_resource" "install_docker" {
   provisioner "local-exec" {
@@ -111,3 +106,19 @@ resource "null_resource" "install_coder" {
   }
   depends_on = [null_resource.install_kind, null_resource.install_docker]
 }
+
+resource "null_resource" "virtualbox_installation" {
+  provisioner "local-exec" {
+    command = "sudo apt-get update && sudo apt-get install -y virtualbox"
+  }
+  depends_on = [null_resource."install_coder"]
+}
+
+resource "null_resource" "emacs_broadway_installation" {
+  provisioner "local-exec" {
+    command = "sudo apt-get update && sudo apt-get install -y emacs25 libgtk-3-0 && emacs -nw --with-feature=broadway --kill"
+  }
+  depends_on = [null_resource."emacs_broadway_installation"]
+}
+
+
