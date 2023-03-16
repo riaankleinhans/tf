@@ -63,6 +63,11 @@ resource "null_resource" "write_username_to_file" {
   }
 }
 
+resource "null_resource" "virtualbox_installation" {
+  provisioner "local-exec" {
+    command = "sudo apt-get update && sudo apt-get install -y virtualbox"
+  }
+}
 
 resource "null_resource" "install_docker" {
   provisioner "local-exec" {
