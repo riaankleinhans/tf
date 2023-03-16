@@ -63,11 +63,6 @@ resource "null_resource" "write_username_to_file" {
   }
 }
 
-resource "null_resource" "virtualbox_installation" {
-  provisioner "local-exec" {
-    command = "sudo apt-get update && sudo apt-get install -y virtualbox"
-  }
-}
 
 resource "null_resource" "install_docker" {
   provisioner "local-exec" {
@@ -110,4 +105,18 @@ resource "null_resource" "install_coder" {
     EOT
   }
   depends_on = [null_resource.install_kind, null_resource.install_docker]
+}
+
+resource "null_resource" "virtualbox_installation" {
+  provisioner "local-exec" {
+    command = "sudo apt-get update && sudo apt-get install -y virtualbox"
+  }
+  depends_on = [null_resource.install_coder]
+}
+
+resource "null_resource" "emacs_broadway_installation" {
+   provisioner "local-exec" {
+    command = "sudo apt-get update && sudo apt-get install -y emacs libgtk-3-0 xvfb && Xvfb :0 -screen 0 1024x768x24 & DISPLAY=:0 emacs --fg-daemon=broadway -f server-start && echo 'Emacs with Broadway support installed successfully.'"
+   }
+  depends_on = [null_resource.virtualbox_installation]
 }
