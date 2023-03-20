@@ -148,14 +148,7 @@ resource "null_resource" "install_chrome" {
 
 resource "null_resource" "install_slack" {
   provisioner "local-exec" {
-    command = <<EOT
-      wget https://downloads.slack-edge.com/linux_releases/slack-desktop-4.17.0-amd64.deb -O slack.deb
-      sudo apt-get update
-      sudo apt-get -y install gconf2 gconf-service libgtk2.0-0 libnotify4 libnss3 libxss1 libxtst6 xdg-utils
-      sudo dpkg -i slack.deb
-      sudo apt-get -y install -f
-      rm slack.deb
-    EOT
+    command = "sudo snap install -y slack"
   }
  depends_on = [null_resource.install_chrome]
 }
