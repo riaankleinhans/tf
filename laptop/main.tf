@@ -75,7 +75,7 @@ resource "null_resource" "install_kind" {
       sudo mv ./kind /usr/local/bin/kind
     EOT
   }
-  depends_on = [null_resource.kubectl]
+  depends_on = [null_resource.install_kubectl]
 }
 
 resource "null_resource" "install_coder" {
