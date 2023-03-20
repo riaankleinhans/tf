@@ -32,11 +32,20 @@ resource "null_resource" "install_tmate" {
   depends_on = [null_resource.install_gparted]
 }
 
+resource "null_resource" "install_tmux" {
+  provisioner "local-exec" {
+    command = "sudo apt install -y tmux"
+  }
+  depends_on = [null_resource.install_tmate]
+}
+
+sudo apt-get install tmux
+
 resource "null_resource" "install_vim" {
   provisioner "local-exec" {
     command = "sudo apt install -y vim"
   }
-  depends_on = [null_resource.install_tmate]
+  depends_on = [null_resource.install_tmux]
 }
 
 resource "null_resource" "install_pwgen" {
