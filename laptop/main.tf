@@ -24,7 +24,7 @@ resource "null_resource" "sync_apt_repos" {
 
 resource "null_resource" "install_apt_packages" {
   provisioner "local-exec" {
-    command = "sudo apt-get install -y htop curl gparted tmate tmux vim pwgen openssh-server virtualbox"
+    command = "sudo apt-get install -y htop curl gparted tmate tmux vim pwgen openssh-server virtualbox kitty"
   }
   depends_on = [null_resource.sync_apt_repos]
 }
