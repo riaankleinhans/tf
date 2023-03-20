@@ -183,13 +183,3 @@ resource "null_resource" "install_blender" {
  depends_on = [null_resource.install_obs_studio]
 }
 
-resource "null_resource" "install_zoom" {
-  provisioner "local-exec" {
-    command = <<EOT
-      wget https://zoom.us/client/latest/zoom_amd64.deb
-      sudo apt-get update
-      sudo apt-get -y install ./zoom_amd64.deb
-      rm zoom_amd64.deb
-    EOT
-  }
-}
