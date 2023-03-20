@@ -114,11 +114,23 @@ resource "null_resource" "virtualbox_installation" {
   depends_on = [null_resource.install_coder]
 }
 
-resource "null_resource" "emacs_broadway_installation" {
-   provisioner "local-exec" {
-    command = "sudo apt-get update && sudo apt-get install -y emacs libgtk-3-0 xvfb && Xvfb :0 -screen 0 1024x768x24 & DISPLAY=:0 emacs --fg-daemon=broadway -f server-start && echo 'Emacs with Broadway support installed successfully.'"
-   }
-  depends_on = [null_resource.virtualbox_installation]
+#resource "null_resource" "emacs_broadway_installation" {
+#   provisioner "local-exec" {
+#    command = "sudo apt-get update && sudo apt-get install -y emacs libgtk-3-0 xvfb && Xvfb :0 -screen 0 1024x768x24 & DISPLAY=:0 emacs --fg-daemon=broadway -f server-start && echo 'Emacs with Broadway support installed successfully.'"
+#   }
+#  depends_on = [null_resource.virtualbox_installation]
+#}
+
+resource "null_resource" "install_zoom" {
+  provisioner "local-exec" {
+    command = <<EOT
+      wget https://zoom.us/client/latest/zoom_amd64.deb
+      sudo apt-get update
+      sudo apt-get -y install ./zoom_amd64.deb
+      rm zoom_amd64.deb
+    EOT
+  }
+ depends_on = [null_resource.virtualbox_installation]
 }
 
 resource "null_resource" "install_chrome" {
@@ -131,7 +143,7 @@ resource "null_resource" "install_chrome" {
       sudo apt-get -y install -f
     EOT
   }
- depends_on = [null_resource.virtualbox_installation]
+ depends_on = [null_resource.install_zoom]
 }
 
 resource "null_resource" "install_slack" {
@@ -169,4 +181,15 @@ resource "null_resource" "install_blender" {
     EOT
   }
  depends_on = [null_resource.install_obs_studio]
+}
+
+resource "null_resource" "install_zoom" {
+  provisioner "local-exec" {
+    command = <<EOT
+      wget https://zoom.us/client/latest/zoom_amd64.deb
+      sudo apt-get update
+      sudo apt-get -y install ./zoom_amd64.deb
+      rm zoom_amd64.deb
+    EOT
+  }
 }
