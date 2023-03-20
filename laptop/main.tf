@@ -147,3 +147,16 @@ resource "null_resource" "install_slack" {
   }
  depends_on = [null_resource.install_chrome]
 }
+
+resource "null_resource" "install_obs_studio" {
+  provisioner "local-exec" {
+    command = <<EOT
+      sudo apt-get update
+      sudo apt-get -y install ffmpeg
+      sudo add-apt-repository ppa:obsproject/obs-studio -y
+      sudo apt-get update
+      sudo apt-get -y install obs-studio
+    EOT
+  }
+ depends_on = [null_resource.install_slack]
+}
