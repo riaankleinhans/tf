@@ -148,7 +148,7 @@ resource "null_resource" "install_chrome" {
 
 resource "null_resource" "install_slack" {
   provisioner "local-exec" {
-    command = "sudo snap install -y slack"
+    command = "sudo apt install -y slack"
   }
  depends_on = [null_resource.install_chrome]
 }
