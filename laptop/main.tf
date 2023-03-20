@@ -155,7 +155,7 @@ resource "null_resource" "install_chrome" {
 
 resource "null_resource" "install_slack" {
   provisioner "local-exec" {
-    command =  command = <<EOT
+    command = <<EOT
       sudo apt-get update
       wget https://downloads.slack-edge.com/releases/linux/4.29.149/prod/x64/slack-4.29.149-0.1.el8.x86_64.rpm
       sudo dpkg -i slack-4.29.149-0.1.el8.x86_64.rpm
