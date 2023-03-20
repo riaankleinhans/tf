@@ -39,8 +39,6 @@ resource "null_resource" "install_tmux" {
   depends_on = [null_resource.install_tmate]
 }
 
-sudo apt-get install tmux
-
 resource "null_resource" "install_vim" {
   provisioner "local-exec" {
     command = "sudo apt install -y vim"
