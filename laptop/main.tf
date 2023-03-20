@@ -217,3 +217,10 @@ resource "null_resource" "install_teamviewer" {
   }
   depends_on = [null_resource.install_blender]
 }
+
+resource "null_resource" "install_vagrant" {
+  provisioner "local-exec" {
+    command = "wget https://releases.hashicorp.com/vagrant/2.2.18/vagrant_2.2.18_x86_64.deb && sudo dpkg -i vagrant_2.2.18_x86_64.deb"
+  }
+ depends_on = [null_resource.install_vagrant]
+}
