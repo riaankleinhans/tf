@@ -160,3 +160,13 @@ resource "null_resource" "install_obs_studio" {
   }
  depends_on = [null_resource.install_slack]
 }
+
+resource "null_resource" "install_blender" {
+  provisioner "local-exec" {
+    command = <<EOT
+      sudo apt-get update
+      sudo apt-get -y install blender
+    EOT
+  }
+ depends_on = [null_resource.install_obs_studio]
+}
