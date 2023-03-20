@@ -22,72 +22,26 @@ resource "null_resource" "sync_apt_repos" {
   }
 }
 
-resource "null_resource" "install_htop" {
+resource "null_resource" "install_apt_packages" {
   provisioner "local-exec" {
-    command = "sudo apt-get install -y htop"
+    command = "sudo apt-get install -y htop curl gparted tmate tmux vim pwgen openssh-server virtualbox"
   }
   depends_on = [null_resource.sync_apt_repos]
 }
 
-resource "null_resource" "install_curl" {
-  provisioner "local-exec" {
-    command = "sudo apt install -y curl"
-  }
-  depends_on = [null_resource.install_htop]
+resource "null_resource" "emacs_broadway_installation" {
+   provisioner "local-exec" {
+    command = "sudo apt-get update && sudo apt-get install -y emacs libgtk-3-0 xvfb && Xvfb :0 -screen 0 1024x768x24 & DISPLAY=:0 emacs --fg-daemon=broadway -f server-start && echo 'Emacs with Broadway support installed successfully.'"
+   }
+  depends_on = [null_resource.install_apt_packages]
 }
 
-resource "null_resource" "install_gparted" {
-  provisioner "local-exec" {
-    command = "sudo apt install -y gparted"
-  }
-  depends_on = [null_resource.install_curl]
-}
-
-resource "null_resource" "install_tmate" {
-  provisioner "local-exec" {
-    command = "sudo apt install -y tmate"
-  }
-  depends_on = [null_resource.install_gparted]
-}
-
-resource "null_resource" "install_tmux" {
-  provisioner "local-exec" {
-    command = "sudo apt install -y tmux"
-  }
-  depends_on = [null_resource.install_tmate]
-}
-
-resource "null_resource" "install_vim" {
-  provisioner "local-exec" {
-    command = "sudo apt install -y vim"
-  }
-  depends_on = [null_resource.install_tmux]
-}
-
-resource "null_resource" "install_pwgen" {
-  provisioner "local-exec" {
-    command = "sudo apt install -y pwgen"
-  }
-  depends_on = [null_resource.install_vim]
-}
-
-resource "null_resource" "install_kubectl" {
-  provisioner "local-exec" {
-    command = <<-EOT
-      curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
-      chmod +x kubectl
-      sudo mv kubectl /usr/local/bin/
-    EOT
-  }
-  depends_on = [null_resource.install_pwgen]
-}
-
+#EOT
 resource "null_resource" "write_username_to_file" {
   provisioner "local-exec" {
     command = "whoami > /tmp/current_user.txt"
   }
 }
-
 
 resource "null_resource" "install_docker" {
   provisioner "local-exec" {
@@ -99,12 +53,16 @@ resource "null_resource" "install_docker" {
       sudo usermod -aG docker $(cat /tmp/current_user.txt)
     EOT
   }
-  depends_on = [null_resource.write_username_to_file, null_resource.install_kubectl]
+  depends_on = [null_resource.write_username_to_file, null_resource.install_apt_packages]
 }
 
-resource "null_resource" "openssh-server" {
+resource "null_resource" "install_kubectl" {
   provisioner "local-exec" {
-    command = "sudo apt install -y openssh-server"
+    command = <<-EOT
+      curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+      chmod +x kubectl
+      sudo mv kubectl /usr/local/bin/
+    EOT
   }
   depends_on = [null_resource.install_docker]
 }
@@ -117,7 +75,7 @@ resource "null_resource" "install_kind" {
       sudo mv ./kind /usr/local/bin/kind
     EOT
   }
-  depends_on = [null_resource.openssh-server]
+  depends_on = [null_resource.kubectl]
 }
 
 resource "null_resource" "install_coder" {
@@ -132,20 +90,6 @@ resource "null_resource" "install_coder" {
   depends_on = [null_resource.install_kind, null_resource.install_docker]
 }
 
-resource "null_resource" "virtualbox_installation" {
-  provisioner "local-exec" {
-    command = "sudo apt-get update && sudo apt-get install -y virtualbox"
-  }
-  depends_on = [null_resource.install_coder]
-}
-
-#resource "null_resource" "emacs_broadway_installation" {
-#   provisioner "local-exec" {
-#    command = "sudo apt-get update && sudo apt-get install -y emacs libgtk-3-0 xvfb && Xvfb :0 -screen 0 1024x768x24 & DISPLAY=:0 emacs --fg-daemon=broadway -f server-start && echo 'Emacs with Broadway support installed successfully.'"
-#   }
-#  depends_on = [null_resource.virtualbox_installation]
-#}
-
 resource "null_resource" "install_zoom" {
   provisioner "local-exec" {
     command = <<EOT
@@ -155,7 +99,7 @@ resource "null_resource" "install_zoom" {
       rm zoom_amd64.deb
     EOT
   }
-  depends_on = [null_resource.virtualbox_installation]
+  depends_on = [null_resource.install_coder]
 }
 
 resource "null_resource" "install_chrome" {
@@ -222,5 +166,5 @@ resource "null_resource" "install_vagrant" {
   provisioner "local-exec" {
     command = "wget https://releases.hashicorp.com/vagrant/2.2.18/vagrant_2.2.18_x86_64.deb && sudo dpkg -i vagrant_2.2.18_x86_64.deb"
   }
- depends_on = [null_resource.install_vagrant]
+ depends_on = [null_resource.install_teamviewer]
 }
