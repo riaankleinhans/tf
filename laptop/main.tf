@@ -131,4 +131,5 @@ resource "null_resource" "install_chrome" {
       sudo apt-get -y install -f
     EOT
   }
+ depends_on = [null_resource.virtualbox_installation]
 }
