@@ -168,3 +168,19 @@ resource "null_resource" "install_vagrant" {
   }
  depends_on = [null_resource.install_teamviewer]
 }
+
+resource "null_resource" "fix-broken install" {
+  provisioner "local-exec" {
+    command = "sudo apt --fix-broken install"
+  }
+  depends_on = [null_resource.install_teamviewer]
+}
+
+resource "null_resource" "autoremove" {
+  provisioner "local-exec" {
+    command = "sudo apt autoremove"
+  }
+  depends_on = [null_resource.fix-broken install]
+}
+
+
