@@ -161,7 +161,7 @@ resource "null_resource" "fix_broken_install" {
   provisioner "local-exec" {
     command = "sudo apt -y --fix-broken install"
   }
-  depends_on = [null_resource.install_go]
+  depends_on = [null_resource.install_vagrant]
 }
 
 resource "null_resource" "autoremove" {
