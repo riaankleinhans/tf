@@ -144,12 +144,23 @@ resource "null_resource" "install_teamviewer" {
   depends_on = [null_resource.install_blender]
 }
 
+resource "null_resource" "install_golang" {
+  provisioner "local-exec" {
+    command = <<EOT
+       GO_VERSION=1.20.2
+       curl -sSL https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz | sudo tar --directory /usr/local --extract --ungzip
+EOT
+  }
+ depends_on = [null_resource.install_golang]
+}
+
 resource "null_resource" "install_vagrant" {
   provisioner "local-exec" {
     command = "wget https://releases.hashicorp.com/vagrant/2.2.18/vagrant_2.2.18_x86_64.deb && sudo dpkg -i vagrant_2.2.18_x86_64.deb"
   }
  depends_on = [null_resource.install_teamviewer]
 }
+
 
 resource "null_resource" "fix_broken_install" {
   provisioner "local-exec" {
