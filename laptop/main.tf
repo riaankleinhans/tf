@@ -1,21 +1,3 @@
-# https://manpages.ubuntu.com/manpages/jammy/man8/apt-get.8.html
-# update first, then upgrade : but only needed once (unless PPAs)
-
-# https://registry.terraform.io/providers/hashicorp/null/latest
-# Provides constructs that intentionally do nothing
-# https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource
-#    – useful in various situations to help orchestrate tricky behavior or work around limitations.
-# https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource#example-usage
-
-# Lifecycle
-# https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle
-# Condition Checks
-# https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle#custom-condition-checks
-# Custom Conditions
-# https://developer.hashicorp.com/terraform/language/expressions/custom-conditions#preconditions-and-postconditions
-#
-# https://developer.hashicorp.com/terraform/language/resources/provisioners/local-exec
-
 resource "null_resource" "sync_apt_repos" {
   provisioner "local-exec" {
     command = "sudo apt-get update && sudo apt-get -y upgrade"
