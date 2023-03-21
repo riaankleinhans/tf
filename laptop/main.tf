@@ -11,12 +11,6 @@ resource "null_resource" "install_apt_packages" {
   depends_on = [null_resource.sync_apt_repos]
 }
 
-resource "null_resource" "emacs_broadway_installation" {
-   provisioner "local-exec" {
-    command = "sudo apt-get update && sudo apt-get install -y emacs libgtk-3-0 xvfb && Xvfb :0 -screen 0 1024x768x24 & DISPLAY=:0 emacs --fg-daemon=broadway -f server-start && echo 'Emacs with Broadway support installed successfully.'"
-   }
-  depends_on = [null_resource.install_apt_packages]
-}
 
 #EOT
 resource "null_resource" "write_username_to_file" {
@@ -147,7 +141,7 @@ resource "null_resource" "install_teamviewer" {
 resource "null_resource" "install_go" {
   provisioner "local-exec" {
     command = <<-EOT
-      export GO_VERSION=1.17.5
+      export GO_VERSION=1.20.2
       curl -sSL https://dl.google.com/go/go$GO_VERSION.linux-amd64.tar.gz | sudo tar -C /usr/local -xzf -
       export PATH=$PATH:/usr/local/go/bin
     EOT
