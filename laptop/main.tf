@@ -117,10 +117,12 @@ resource "null_resource" "install_obs_studio" {
 }
 
 resource "null_resource" "install_blender" {
-  provisioner "local-exec" {
+   provisioner "local-exec" {
     command = <<EOT
-      sudo apt-get update
-      sudo apt-get -y install blender
+      wget https://download.blender.org/release/Blender2.93/blender-2.93.8-linux-x64.tar.xz
+      tar xf blender-2.93.8-linux-x64.tar.xz
+      sudo mv blender-2.93.8-linux-x64 /opt/blender
+      sudo ln -s /opt/blender/blender /usr/local/bin/blender
     EOT
   }
   depends_on = [null_resource.install_obs_studio]
