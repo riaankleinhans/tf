@@ -1,0 +1,38 @@
+name: Add to Project Board
+on:
+  issues:
+    types: [opened]
+  pull_request:
+    types: [opened]
+
+jobs:
+  add_to_project_board:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Add to Project Board
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issue = context.payload.issue || context.payload.pull_request;
+            const projectUrl = 'https://github.com/users/Riaankl/projects/1';
+
+            const projectId = projectUrl.split('/').pop();
+            const columnName = 'ToDo';
+
+            const { data: column } = await github.projects.listColumns({
+              project_id: projectId
+            });
+            const desiredColumn = column.find(col => col.name === columnName);
+            
+            if (!desiredColumn) {
+              console.log(`Column ${columnName} not found in project ${projectId}.`);
+              return;
+            }
+
+            const { data: card } = await github.projects.createCard({
+              column_id: desiredColumn.id,
+              content_id: issue.id,
+              content_type: issue.pull_request ? 'PullRequest' : 'Issue',
+            });
