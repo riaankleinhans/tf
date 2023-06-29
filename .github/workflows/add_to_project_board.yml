@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Add to Project Board
-        uses: Riaankl
+        uses: actions/github-script@v4
         with:
           github-token: ${{ secrets.GHA_TOKEN }}
           script: |
