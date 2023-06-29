@@ -1,4 +1,4 @@
-# Getting Docker, Kind and Coder up and running with Terraform
+## Getting Docker, Kind and Coder up and running with Terraform
 
 ## Create a VM with Ubuntu
 
