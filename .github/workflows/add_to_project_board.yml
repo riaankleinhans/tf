@@ -16,7 +16,7 @@ jobs:
           github-token: ${{ secrets.GHA_TOKEN }}
           script: |
             const issue = context.payload.issue || context.payload.pull_request;
-            const projectUrl = 'https://github.com/users/Riaankl/projects/1';
+            const projectUrl = 'https://github.com/users/Riaankl/projects/1/views/1';
 
             const projectId = projectUrl.split('/').pop();
             const columnName = 'ToDo';
