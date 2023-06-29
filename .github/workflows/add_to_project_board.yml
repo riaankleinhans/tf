@@ -13,7 +13,7 @@ jobs:
       - name: Add to Project Board
         uses: actions/github-script@v4
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.gha_token }}
           script: |
             const issue = context.payload.issue || context.payload.pull_request;
             const projectUrl = 'https://github.com/users/Riaankl/projects/1';
